@@ -1,5 +1,6 @@
 package training;
 
+import java.util.stream.Collectors;
 import training.model.Message;
 
 import java.util.List;
@@ -14,60 +15,65 @@ import java.util.function.Supplier;
  * More info in spanish: https://experto.dev/java-8-optional/
  * More info in english: https://www.baeldung.com/java-optional
  */
-public class Optionals {
+class Optionals {
 
-    public Optional<String> getAnEmptyOptional() {
-        // TODO
-        return null;
-    }
+	Optional<String> getAnEmptyOptional() {
 
-    public Optional<String> getAnOptionalOfANullableMessage(final String message) {
-        // TODO
-        return null;
-    }
+		return Optional.empty();
+	}
 
-    public boolean checkIfTheMessageProvidedHasValue(final Supplier<Optional<String>> messageSupplier) {
-        // TODO
-        return false;
-    }
+	Optional<String> getAnOptionalOfANullableMessage(final String message) {
 
-    public String getTheMessageProvidedOrNullIfItHasNoValue(final Supplier<Optional<String>> messageSupplier) {
-        // TODO
-        return null;
-    }
+		return Optional.ofNullable(message);
+	}
 
-    public void printTheMessageProvidedOnlyIfItHasValue(final Supplier<Optional<String>> messageSupplier) {
-        // TODO
-    }
+	boolean checkIfTheMessageProvidedHasValue(final Supplier<Optional<String>> messageSupplier) {
 
-    public String getTheMessageProvidedOrTheDefaultMessageIfItHasNoValue(final Supplier<Optional<String>> messageSupplier,
-                                                                         final Supplier<String> defaultMessageSupplier) {
-        // TODO
-        return null;
-    }
+		return messageSupplier.get().isPresent();
+	}
 
-    public String getTheMessageProvidedOrThrowIllegalArgumentExceptionIfItHasNoValue(final Supplier<Optional<String>> messageSupplier) {
-        // TODO
-        return null;
-    }
+	String getTheMessageProvidedOrNullIfItHasNoValue(final Supplier<Optional<String>> messageSupplier) {
 
-    public Optional<String> getTheMessageProvidedInUpperCase(final Supplier<Optional<String>> messageSupplier) {
-        // TODO
-        return null;
-    }
+		return messageSupplier.get().orElse(null);
+	}
 
-    public Optional<Integer> getTheNumberProvidedOnlyIfItIsAnEvenNumber(final Supplier<Optional<Integer>> numberSupplier) {
-        // TODO
-        return null;
-    }
+	void printTheMessageProvidedOnlyIfItHasValue(final Supplier<Optional<String>> messageSupplier) {
 
-    public Optional<String> getTheMessageContentInUpperCase(final Supplier<Optional<Message>> messageSupplier) {
-        // TODO
-        return null;
-    }
+		messageSupplier.get().ifPresent(System.out::println);
+	}
 
-    public List<String> getTheMessageContentsThatHaveValue(final Supplier<List<Message>> messagesSupplier) {
-        // TODO
-        return null;
-    }
+	String getTheMessageProvidedOrTheDefaultMessageIfItHasNoValue(final Supplier<Optional<String>> messageSupplier,
+		final Supplier<String> defaultMessageSupplier) {
+
+		return messageSupplier.get().orElseGet(defaultMessageSupplier);
+	}
+
+	String getTheMessageProvidedOrThrowIllegalArgumentExceptionIfItHasNoValue(final Supplier<Optional<String>> messageSupplier) {
+		return messageSupplier.get().orElseThrow(IllegalArgumentException::new);
+	}
+
+	Optional<String> getTheMessageProvidedInUpperCase(final Supplier<Optional<String>> messageSupplier) {
+
+		return messageSupplier.get().map(String::toUpperCase);
+	}
+
+	Optional<Integer> getTheNumberProvidedOnlyIfItIsAnEvenNumber(final Supplier<Optional<Integer>> numberSupplier) {
+
+		return numberSupplier.get().filter(number -> number % 2 == 0);
+	}
+
+	Optional<String> getTheMessageContentInUpperCase(final Supplier<Optional<Message>> messageSupplier) {
+
+		return messageSupplier.get().flatMap(Message::getContent).map(String::toUpperCase);
+	}
+
+	List<String> getTheMessageContentsThatHaveValue(final Supplier<List<Message>> messagesSupplier) {
+
+		return messagesSupplier.get().stream()
+			.map(Message::getContent)
+			.filter(Optional::isPresent)
+			.map(Optional::get)
+			.collect(Collectors.toList());
+
+	}
 }

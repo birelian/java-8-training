@@ -1,5 +1,6 @@
 package training;
 
+import java.time.LocalDate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -14,69 +15,74 @@ import java.util.function.UnaryOperator;
  * More info in spanish: https://www.adictosaltrabajo.com/2015/12/04/expresiones-lambda-con-java-8/
  * More info in english: https://www.baeldung.com/java-8-functional-interfaces
  */
-public class Lambdas {
+class Lambdas {
 
     /*
     Supplier
      */
-    public Supplier<Integer> getASupplierThatProvidesTheCurrentYear() {
-        // TODO
-        return null;
+    Supplier<Integer> getASupplierThatProvidesTheCurrentYear() {
+
+        return () -> LocalDate.now().getYear();
     }
 
-    public void printCurrentYear() {
-        // TODO
+    void printCurrentYear() {
+
+        System.out.println(getASupplierThatProvidesTheCurrentYear().get());
     }
 
 
     /*
     Consumer
      */
-    public Consumer<String> getAConsumerThatPrintsAString() {
-        // TODO
-        return null;
+    Consumer<String> getAConsumerThatPrintsAString() {
+
+        return System.out::println;
     }
 
-    public void printValue(final String value) {
-        // TODO
+    void printValue(final String value) {
+
+        getAConsumerThatPrintsAString().accept(value);
     }
 
 
     /*
     Function
      */
-    public Function<String, Integer> getAFunctionThatCountsTheNumberOfCharactersOfAString() {
-        // TODO
-        return null;
+    Function<String, Integer> getAFunctionThatCountsTheNumberOfCharactersOfAString() {
+
+        return String::length;
     }
 
-    public void printNumberOfCharacters(final String myString) {
-        // TODO
+    void printNumberOfCharacters(final String myString) {
+
+        System.out.println(getAFunctionThatCountsTheNumberOfCharactersOfAString().apply(myString));
     }
 
 
     /*
     Predicate
      */
-    public Predicate<Integer> getAPredicateThatDetectsAnEvenNumber() {
-        // TODO
-        return null;
+    Predicate<Integer> getAPredicateThatDetectsAnEvenNumber() {
+
+        return number -> number % 2 == 0;
     }
 
-    public void printWhetherANumberIsEvenOrNot(final Integer number) {
-        // TODO
+    void printWhetherANumberIsEvenOrNot(final Integer number) {
+
+        System.out.println(getAPredicateThatDetectsAnEvenNumber().test(number));
     }
 
 
     /*
     UnaryOperator
      */
-    public UnaryOperator<String> getAUnaryOperatorThatTransformsAStringToUpperCase() {
-        // TODO
-        return null;
+    UnaryOperator<String> getAUnaryOperatorThatTransformsAStringToUpperCase() {
+
+        return String::toUpperCase;
     }
 
-    public void printAStringToUpperCase(final String myString) {
-        // TODO
+    void printAStringToUpperCase(final String myString) {
+
+        System.out.println(getAUnaryOperatorThatTransformsAStringToUpperCase().apply(myString));
     }
 }
